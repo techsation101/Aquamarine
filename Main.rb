@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 puts "Welcome to AMOC"
 puts "Please enter your Aquamarine code here:"
 puts ""
@@ -173,7 +175,7 @@ for char in codeAsList do
         end
       end
     end
-    puts variables
+    #puts variables
   end
   temp0 = ""
   temp1 = ""
