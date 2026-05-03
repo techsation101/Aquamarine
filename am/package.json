@@ -15,19 +15,16 @@
       "id": "am",
       "aliases": ["Aquamarine", "am"],
       "extensions": [".am"],
-      "configuration": "./language-configuration.json"
+      "configuration": "./language-configuration.json",
+      "icon": {
+        "light": "./icons/file-icon.png",
+        "dark": "./icons/file-icon.png"
+      }
     }],
     "grammars": [{
       "language": "am",
       "scopeName": "source.am",
       "path": "./syntaxes/am.tmLanguage.json"
-    }],
-    "iconThemes": [
-        {
-            "id": "aquamarine-icons",
-            "label": "Aquamarine Icons",
-            "path": "./aquamarine-icons.json"
-        }
-    ]
+    }]
   }
 }
