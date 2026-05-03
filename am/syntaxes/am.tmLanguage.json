@@ -1,0 +1,52 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Aquamarine",
+	"scopeName": "source.aquamarine",
+	"patterns": [
+		{ "include": "#strings" },
+		{ "include": "#commands" },
+		{ "include": "#variables" },
+		{ "include": "#operators" },
+		{ "include": "#numbers" }
+	],
+	"repository": {
+		"commands": {
+			"patterns": [{
+				"name": "keyword.control.aquamarine",
+				"match": "(?<=&)(p|m)(?=`)"
+			}]
+		},
+		"variables": {
+			"patterns": [
+				{
+					"name": "variable.other.reference.aquamarine",
+					"match": "\\\\[a-zA-Z0-9_]+"
+				},
+				{
+					"name": "variable.name.aquamarine",
+					"match": "(?<=&)[a-zA-Z0-9_]+(?==)"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.backtick.aquamarine",
+			"begin": "`",
+			"end": "`",
+			"patterns": [
+				{ "include": "#variables" }
+			]
+		},
+		"operators": {
+			"patterns": [{
+				"name": "keyword.operator.aquamarine",
+				"match": "(\\+|-|\\*|/|\\^|=)"
+			}]
+		},
+		"numbers": {
+			"patterns": [{
+				"name": "constant.numeric.aquamarine",
+				"match": "\\b\\d+(\\.\\d+)?\\b"
+			}]
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+  "iconDefinitions": {
+    "aqua_icon": {
+      "iconPath": "./icons/file-icon.png"
+    }
+  },
+  "fileExtensions": {
+    "am": "aqua_icon",
+    "aquamarine": "aqua_icon"
+  }
+}

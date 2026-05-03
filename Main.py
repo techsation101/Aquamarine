@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 import collections
+import sys
 
 print("Welcome to AMOC")
 print("Please enter your Aquamarine code here:\n")
-code = input("")
+if len(sys.argv) > 1:
+    # Grab the first argument after the script name
+    file_path = sys.argv[1] 
+    
+    with open(file_path, 'r') as file:
+        content = file.read()
+    #print("File content:")
+    code = content
+else:
+    code = input("")
 
 # Helper function to find the nearest ampersand
 def slice_from_nearest_ampersand(char_list, target_index):
