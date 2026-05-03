@@ -1,5 +1,5 @@
 # Aquamarine
-A ruby-based programming language. Perfect for me.
+A python-based programming language (used to be based on Ruby). Perfect for me.
 
 **Features without +:**
 
