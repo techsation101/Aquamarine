@@ -10,3 +10,5 @@ _=#(set_value change _ to any variable and # to any value (defaults to string))
 \\#\\(references_variable change # to any variable)
 
 `m#+#(math change # to any number and + to +, -, *, /, or ^ (if used with variable both 'numbers' have to be variables))
+
+`f@#@#@(defining_functions change # to any operation, surround operations with @ (currently only allows setting variables outside of function unless using math and referencing another variable setup outside))

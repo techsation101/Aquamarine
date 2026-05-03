@@ -41,105 +41,140 @@ def variable_referencer(index_ahead, char_list, local, variables_dict):
 variables = {}
 output = ""
 code_as_list = list(code)
-local_in_code = 0
 
-for char in code_as_list:
-    # --- PRINTING LOGIC (p command) ---
-    if char == "p":
-        should_print = False
-        # Ruby logic: if index-1 >= 0 and code[index-1] == '&'
-        if local_in_code - 1 >= 0:
-            if code_as_list[local_in_code - 1] == "&" and code_as_list[local_in_code + 1] == "`":
-                should_print = True
-        elif local_in_code == 0:
-            if len(code_as_list) > 1 and code_as_list[1] == "`":
-                should_print = True
-        
-        if should_print:
-            output += "\n"
-            # Iterate through the printable section
-            for i in range(local_in_code + 2, len(code_as_list)):
-                p_char = code_as_list[i]
-                if p_char == "`":
-                    break
-                if p_char == "\\":
-                    val, _ = variable_referencer(3, code_as_list, local_in_code, variables)
-                    output += str(val)
-                    break
-                output += p_char
+def main_loop(list_code):
+    global variables
+    global output
+    local_in_code = 0
+    
+    for char in list_code:
+        # --- PRINTING LOGIC (p command) ---
+        if char == "p":
+            should_print = False
+            # Ruby logic: if index-1 >= 0 and code[index-1] == '&'
+            if local_in_code - 1 >= 0:
+                if list_code[local_in_code - 1] == "&" and list_code[local_in_code + 1] == "`":
+                    should_print = True
+            elif local_in_code == 0:
+                if len(list_code) > 1 and list_code[1] == "`":
+                    should_print = True
+            
+            if should_print:
+                output += "\n"
+                # Iterate through the printable section
+                for i in range(local_in_code + 2, len(list_code)):
+                    p_char = list_code[i]
+                    if p_char == "`":
+                        break
+                    if p_char == "\\":
+                        val, _ = variable_referencer(3, list_code, local_in_code, variables)
+                        output += str(val)
+                        break
+                    output += p_char
 
-    # --- VARIABLE ASSIGNMENT LOGIC (= command) ---
-    if char == "=":
-        temp0 = ""
-        temp1 = ""
-        
-        # Simple Assignment
-        if code_as_list[local_in_code + 1] != "`":
-            for i in range(local_in_code + 1, len(code_as_list)):
-                val = code_as_list[i]
-                if val == "&":
-                    break
-                temp1 += val
+        # --- VARIABLE ASSIGNMENT LOGIC (= command) ---
+        if char == "=":
+            temp0 = ""
+            temp1 = ""
             
-            temp_arr = slice_from_nearest_ampersand(code_as_list, local_in_code)
-            # Remove '&' and '=' (pop equivalent)
-            temp_arr = [c for c in temp_arr if c != "&"]
-            if temp_arr: temp_arr.pop() 
-            
-            var_name = "".join(temp_arr)
-            variables[var_name] = temp1
-            
-        # Math/Complex Assignment
-        else:
-            if code_as_list[local_in_code + 2] == "m":
-                perm0 = ""
-                temp3 = ""
-                temp5_str = ""
-                
-                # Parse first number or variable
-                for i in range(local_in_code + 3, len(code_as_list)):
-                    num_char = code_as_list[i]
-                    if num_char in ["+", "-", "*", "/", "^"]:
+            # Simple Assignment
+            if list_code[local_in_code + 1] != "`":
+                for i in range(local_in_code + 1, len(list_code)):
+                    val = list_code[i]
+                    if val == "&":
                         break
-                    if num_char == "\\":
-                        val, temp5_str = variable_referencer(4, code_as_list, local_in_code, variables)
-                        perm0 = str(val)
-                        break
-                    perm0 += num_char
+                    temp1 += val
                 
-                num0 = float(perm0) if perm0 else 0.0
-                
-                # Parse second number or variable
-                temp4 = ""
-                for i in range(local_in_code + 4 + len(perm0), len(code_as_list)):
-                    num_char = code_as_list[i]
-                    if num_char == "&":
-                        break
-                    if num_char == "\\":
-                        val, _ = variable_referencer(7 + len(temp5_str), code_as_list, local_in_code, variables)
-                        temp1 = str(val)
-                        break
-                    temp1 += num_char
-                
-                # Get target variable name
-                temp_arr = slice_from_nearest_ampersand(code_as_list, local_in_code)
+                temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
+                # Remove '&' and '=' (pop equivalent)
                 temp_arr = [c for c in temp_arr if c != "&"]
-                if temp_arr: temp_arr.pop()
-                target_var = "".join(temp_arr)
+                if temp_arr: temp_arr.pop() 
                 
-                # Perform Math
-                num1 = float(temp1) if temp1 else 0.0
-                op_index = local_in_code + 5 + len(temp5_str)
-                # Check for operator bounds
-                if op_index < len(code_as_list):
-                    op = code_as_list[op_index]
-                    if op == "+": variables[target_var] = num0 + num1
-                    elif op == "-": variables[target_var] = num0 - num1
-                    elif op == "*": variables[target_var] = num0 * num1
-                    elif op == "/": variables[target_var] = num0 / num1 if num1 != 0 else 0
-                    elif op == "^": variables[target_var] = num0 ** num1
+                var_name = "".join(temp_arr)
+                variables[var_name] = temp1
+                
+            # Math/Complex Assignment
+            else:
+                if list_code[local_in_code + 2] == "m":
+                    perm0 = ""
+                    temp3 = ""
+                    temp5_str = ""
+                    
+                    # Parse first number or variable
+                    for i in range(local_in_code + 3, len(list_code)):
+                        num_char = list_code[i]
+                        if num_char in ["+", "-", "*", "/", "^"]:
+                            break
+                        if num_char == "\\":
+                            val, temp5_str = variable_referencer(4, list_code, local_in_code, variables)
+                            perm0 = str(val)
+                            break
+                        perm0 += num_char
+                    
+                    num0 = float(perm0) if perm0 else 0.0
+                    
+                    # Parse second number or variable
+                    temp4 = ""
+                    for i in range(local_in_code + 4 + len(perm0), len(list_code)):
+                        num_char = list_code[i]
+                        if num_char == "&":
+                            break
+                        if num_char == "\\":
+                            val, _ = variable_referencer(7 + len(temp5_str), list_code, local_in_code, variables)
+                            temp1 = str(val)
+                            break
+                        temp1 += num_char
+                    
+                    # Get target variable name
+                    temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
+                    temp_arr = [c for c in temp_arr if c != "&"]
+                    if temp_arr: temp_arr.pop()
+                    target_var = "".join(temp_arr)
+                    
+                    # Perform Math
+                    num1 = float(temp1) if temp1 else 0.0
+                    op_index = local_in_code + 5 + len(temp5_str)
+                    # Check for operator bounds
+                    if op_index < len(list_code):
+                        op = list_code[op_index]
+                        if op == "+": variables[target_var] = num0 + num1
+                        elif op == "-": variables[target_var] = num0 - num1
+                        elif op == "*": variables[target_var] = num0 * num1
+                        elif op == "/": variables[target_var] = num0 / num1 if num1 != 0 else 0
+                        elif op == "^": variables[target_var] = num0 ** num1
+                if list_code[local_in_code + 2] == "f":
+                    #print("67")
+                    #get variable name
+                    temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
+                    temp_arr = [c for c in temp_arr if c != "&"]
+                    if temp_arr: temp_arr.pop()
+                    target_var = "".join(temp_arr)
 
-    local_in_code += 1
+                    for i in range(local_in_code + 4, len(list_code)):
+                        val = list_code[i]
+                        if val == "&":
+                            break
+                        if val == "@":
+                            temp0 += "&"
+                            continue
+                        temp0 += val
+                        #print(temp0)
+                    variables[target_var] = temp0
+                    temp0 = ""
+        if char == "f":
+            if list_code[local_in_code + 1] == "`":
+                for i in range(local_in_code + 2, len(list_code)):
+                    val = list_code[i]
+                    if val == "`":
+                        break
+                    temp0 += val
+                temp_as_list = list(variables[temp0])
+                #print(list_code)
+                main_loop(temp_as_list)
+            temp0 = ""
 
+        local_in_code += 1
+
+main_loop(code_as_list)
 print("\nOutput of code:")
 print(output)
