@@ -150,19 +150,58 @@ def main_loop(list_code):
                     if temp_arr: temp_arr.pop()
                     target_var = "".join(temp_arr)
 
-                    for i in range(local_in_code + 4, len(list_code)):
-                        val = list_code[i]
-                        if val == "&":
-                            break
-                        if val == "@":
-                            temp0 += "&"
-                            continue
-                        temp0 += val
-                        #print(temp0)
-                    variables[target_var] = temp0
+                    if list_code[local_in_code + 3] != "`":
+                        for i in range(local_in_code + 4, len(list_code)):
+                            val = list_code[i]
+                            if val == "&":
+                                break
+                            if val == "@":
+                                temp0 += "&"
+                                continue
+                            temp0 += val
+                            #print(temp0)
+                        variables[target_var] = temp0
+                    else:
+                        for i in range(local_in_code + 4, len(list_code)):
+                            val = list_code[i]
+                            if val == "&":
+                                break
+                            temp0 += val
+                            #print(temp0)
+                        for i in variables[temp0]:
+                            temp1 += i
+                            if i == "R":
+                                temp_num += 1
+                            if i == "E" and temp_num == 1:
+                                temp_num += 1
+                            if i == "T" and temp_num == 2:
+                                temp_num += 1
+                            if i == "U" and temp_num == 3:
+                                temp_num += 1
+                            if i == "R" and temp_num == 4:
+                                temp_num += 1
+                            if i == "N" and temp_num == 5:
+                                temp_num += 1
+                            if i == "\\" and temp_num == 6:
+                                temp_num += 1
+                            if temp_num == 7:
+                                for a in range(len(temp1), len(variables[temp0])):
+                                    b = variables[temp0][a]
+                                    if b == "\\":
+                                        break
+                                    temp2 += b
+                                variables[target_var] = temp2
+                                break
+                                temp_num=0
                     temp0 = ""
+                    temp1 = "" 
+                    temp2 = ""
+                    temp_arr = []
+                    temp_num = 0
+            #print(variables)
+        #calling functions
         if char == "f":
-            if list_code[local_in_code + 1] == "`":
+            if list_code[local_in_code + 1] == "`" and list_code[local_in_code - 1] != "`":
                 for i in range(local_in_code + 2, len(list_code)):
                     val = list_code[i]
                     if val == "`":
