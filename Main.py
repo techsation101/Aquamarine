@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import collections
+import time
 import sys
 
 print("Welcome to AMOC")
@@ -48,6 +49,18 @@ def main_loop(list_code):
     local_in_code = 0
     
     for char in list_code:
+        # --- IMPORT LOGIC (+ command) ---
+        if char == "+":
+            if local_in_code + 1 == len(list_code) or list_code[local_in_code + 1] == "&":
+                temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
+                # Remove '&' and '=' (pop equivalent)
+                temp_arr = [c for c in temp_arr if c != "&"]
+                if temp_arr: temp_arr.pop() 
+                var_name = "".join(temp_arr)
+                
+                with open(var_name + ".am", "r") as file:
+                    content = file.read()
+                    main_loop(list(content))
         # --- PRINTING LOGIC (p command) ---
         if char == "p":
             should_print = False
@@ -71,7 +84,6 @@ def main_loop(list_code):
                         output += str(val)
                         break
                     output += p_char
-
         # --- VARIABLE ASSIGNMENT LOGIC (= command) ---
         if char == "=":
             temp0 = ""
@@ -103,6 +115,7 @@ def main_loop(list_code):
                     # Parse first number or variable
                     for i in range(local_in_code + 3, len(list_code)):
                         num_char = list_code[i]
+                        #print(num_char)
                         if num_char in ["+", "-", "*", "/", "^"]:
                             break
                         if num_char == "\\":
@@ -110,20 +123,24 @@ def main_loop(list_code):
                             perm0 = str(val)
                             break
                         perm0 += num_char
+                        temp5_str = perm0
                     
                     num0 = float(perm0) if perm0 else 0.0
-                    
                     # Parse second number or variable
                     temp4 = ""
-                    for i in range(local_in_code + 4 + len(perm0), len(list_code)):
+                    for i in range(local_in_code + 4 + len(temp5_str), len(list_code)):
                         num_char = list_code[i]
+                        #print(num_char)
                         if num_char == "&":
                             break
                         if num_char == "\\":
+                            yes = True
                             val, _ = variable_referencer(7 + len(temp5_str), list_code, local_in_code, variables)
+                            #print(val)
                             temp1 = str(val)
                             break
                         temp1 += num_char
+                        yes = False
                     
                     # Get target variable name
                     temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
@@ -133,15 +150,23 @@ def main_loop(list_code):
                     
                     # Perform Math
                     num1 = float(temp1) if temp1 else 0.0
-                    op_index = local_in_code + 5 + len(temp5_str)
+                    #print(num0)
+                    if not yes:
+                        op_index = local_in_code + 3 + len(temp5_str)
+                    elif yes:
+                        op_index = local_in_code + 5 + len(temp5_str)
+                    #print(op_index)
                     # Check for operator bounds
+                    #print(len(list_code))
                     if op_index < len(list_code):
                         op = list_code[op_index]
+                        #print(op)
                         if op == "+": variables[target_var] = num0 + num1
                         elif op == "-": variables[target_var] = num0 - num1
                         elif op == "*": variables[target_var] = num0 * num1
                         elif op == "/": variables[target_var] = num0 / num1 if num1 != 0 else 0
                         elif op == "^": variables[target_var] = num0 ** num1
+                        elif op == "%": variables[target_var] = num0 % num1 if num1 != 0 else 0
                 if list_code[local_in_code + 2] == "f":
                     #print("67")
                     #get variable name
@@ -198,9 +223,18 @@ def main_loop(list_code):
                     temp2 = ""
                     temp_arr = []
                     temp_num = 0
+                if list_code[local_in_code + 2] == "t":
+                    #get variable name
+                    temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
+                    temp_arr = [c for c in temp_arr if c != "&"]
+                    if temp_arr: temp_arr.pop()
+                    target_var = "".join(temp_arr)
+
+                    variables[target_var] = time.time_ns()
             #print(variables)
-        #calling functions
+        # --- FUNCTION CALLING LOGIC (f command) ---
         if char == "f":
+            temp0 = ""
             if list_code[local_in_code + 1] == "`" and list_code[local_in_code - 1] != "`":
                 for i in range(local_in_code + 2, len(list_code)):
                     val = list_code[i]
@@ -217,3 +251,5 @@ def main_loop(list_code):
 main_loop(code_as_list)
 print("\nOutput of code:")
 print(output)
+
+#print(time.time_ns() % (100+1))
