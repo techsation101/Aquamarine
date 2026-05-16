@@ -1,1 +1,1 @@
-# blah
+# Simple VS Code Extension for Aquamarine
