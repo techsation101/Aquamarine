@@ -4,6 +4,7 @@
   "description": "A python-based programming language for me",
   "version": "0.1.0",
   "icon": "icon.png",
+  "publisher": "Techsation",
   "engines": {
     "vscode": "^1.118.0"
   },
