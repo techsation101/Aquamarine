@@ -2,7 +2,7 @@
   "name": "am",
   "displayName": "Aquamarine",
   "description": "A python-based programming language for me",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.118.0"
@@ -22,7 +22,7 @@
       }
     }],
     "grammars": [{
-      "language": "am",
+      "language": "Aquamarine",
       "scopeName": "source.am",
       "path": "./syntaxes/am.tmLanguage.json"
     }]
