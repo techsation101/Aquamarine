@@ -21,6 +21,8 @@ RETURN\\#\\(function_return_value change # to any value)
 
 `t(set_value_to_time_in_nanoseconds)
 
+`i(set_value_to_input (it also adds a line down before and two after the input))
+
 #+(import_library change # to any library)
 
 **Features inside rand+:**

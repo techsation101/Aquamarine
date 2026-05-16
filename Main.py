@@ -43,6 +43,7 @@ variables = {}
 output = ""
 code_as_list = list(code)
 
+print("\nResult of code:")
 def main_loop(list_code):
     global variables
     global output
@@ -231,6 +232,16 @@ def main_loop(list_code):
                     target_var = "".join(temp_arr)
 
                     variables[target_var] = time.time_ns()
+                if list_code[local_in_code + 2] == "i":
+                    #get variable name
+                    temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
+                    temp_arr = [c for c in temp_arr if c != "&"]
+                    if temp_arr: temp_arr.pop()
+                    target_var = "".join(temp_arr)
+
+                    print(output)
+                    output = ""
+                    variables[target_var] = input()
             #print(variables)
         # --- FUNCTION CALLING LOGIC (f command) ---
         if char == "f":
@@ -249,7 +260,4 @@ def main_loop(list_code):
         local_in_code += 1
 
 main_loop(code_as_list)
-print("\nOutput of code:")
 print(output)
-
-#print(time.time_ns() % (100+1))
