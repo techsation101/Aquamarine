@@ -11,6 +11,8 @@ _=#(set_value change _ to any variable and # to any value (defaults to string))
 
 `m#+#(math change # to any number and + to +, -, *, /, %, or ^ (if used with variable both 'numbers' have to be variables))
 
+`c#+#(string_concatenation change # to any string of characters (if used with variable both 'strings' have to be variables))
+
 `f@#@#@(defining_functions change # to any command, surround commands with @ (must initialize variables outside of function))
 
 f\`#`(calling_functions change # to any function)
@@ -22,6 +24,14 @@ RETURN\\#\\(function_return_value change # to any value)
 `t(set_value_to_time_in_nanoseconds)
 
 `i(set_value_to_input (it also adds a line down before and two after the input))
+
+l\`#`@\_@_@(while_loop change # to any condition and change _ to any command, surround commands with @ (must initialize variables outside of loop))
+
+T(true_condition)
+
+F(false_condition)
+
+;(break_loop)
 
 #+(import_library change # to any library)
 

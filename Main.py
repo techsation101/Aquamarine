@@ -44,7 +44,7 @@ output = ""
 code_as_list = list(code)
 
 print("\nResult of code:")
-def main_loop(list_code):
+def main_loop(list_code, current=None):
     global variables
     global output
     local_in_code = 0
@@ -241,7 +241,63 @@ def main_loop(list_code):
 
                     print(output)
                     output = ""
-                    variables[target_var] = input()
+                    if list_code[local_in_code + 3] != "@":
+                        variables[target_var] = input()
+                if list_code[local_in_code + 2] == "c":
+                    perm0 = ""
+                    temp3 = ""
+                    temp5_str = ""
+                    
+                    # Parse first number or variable
+                    for i in range(local_in_code + 3, len(list_code)):
+                        num_char = list_code[i]
+                        #print(num_char)
+                        if num_char in ["+", "-", "*", "/", "^"]:
+                            break
+                        if num_char == "\\":
+                            val, temp5_str = variable_referencer(4, list_code, local_in_code, variables)
+                            perm0 = str(val)
+                            break
+                        perm0 += num_char
+                        temp5_str = perm0
+                    
+                    num0 = str(perm0) if perm0 else 0.0
+                    # Parse second number or variable
+                    temp4 = ""
+                    for i in range(local_in_code + 4 + len(temp5_str), len(list_code)):
+                        num_char = list_code[i]
+                        #print(num_char)
+                        if num_char == "&":
+                            break
+                        if num_char == "\\":
+                            yes = True
+                            val, _ = variable_referencer(7 + len(temp5_str), list_code, local_in_code, variables)
+                            #print(val)
+                            temp1 = str(val)
+                            break
+                        temp1 += num_char
+                        yes = False
+                    
+                    # Get target variable name
+                    temp_arr = slice_from_nearest_ampersand(list_code, local_in_code)
+                    temp_arr = [c for c in temp_arr if c != "&"]
+                    if temp_arr: temp_arr.pop()
+                    target_var = "".join(temp_arr)
+                    
+                    # Perform Math
+                    num1 = str(temp1) if temp1 else 0.0
+                    #print(num0)
+                    if not yes:
+                        op_index = local_in_code + 3 + len(temp5_str)
+                    elif yes:
+                        op_index = local_in_code + 5 + len(temp5_str)
+                    #print(op_index)
+                    # Check for operator bounds
+                    #print(len(list_code))
+                    if op_index < len(list_code):
+                        op = list_code[op_index]
+                        #print(op)
+                        if op == "+": variables[target_var] = str(num0) + str(num1)
             #print(variables)
         # --- FUNCTION CALLING LOGIC (f command) ---
         if char == "f":
@@ -256,7 +312,37 @@ def main_loop(list_code):
                 #print(list_code)
                 main_loop(temp_as_list)
             temp0 = ""
+        # --- LOOPING LOGIC (l command) ---
+        if char == "l":
+            temp0 = ""
+            temp1 = ""
+            tempL = [""]
+            if list_code[local_in_code + 1] == "`":
+                for i in range(local_in_code + 2, len(list_code)):
+                    val = list_code[i]
+                    if val == "`":
+                        break
+                    temp0 += val
+                #print(list_code[local_in_code + 4 + len(temp0)])
+                for i in range(local_in_code + 4 + len(temp0), len(list_code)):
+                    val = list_code[i]
+                    if val == "&":
+                        break
+                    if val == "@":
+                        temp1 += "&"
+                        continue
+                    temp1 += val
+                #print(temp0)
+                #print(temp1)
+                if temp0 == "T":
+                    while True and tempL[0] != ";":
+                        main_loop(list(temp1),tempL)
+                        #print(tempL)
 
+        if current != None:
+            current[0] = list_code[local_in_code]
+            if current[0] == ";":
+                break
         local_in_code += 1
 
 main_loop(code_as_list)
