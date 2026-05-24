@@ -38,3 +38,5 @@ F(false_condition)
 **Features inside rand+:**
 
 f\`rand.basic`(sets rand.result equal to a random number between zero and 100)
+
+f\`rand.randNum`(sets rand.result equal to a random number between rand.min and rand.max)

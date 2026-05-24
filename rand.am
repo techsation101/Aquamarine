@@ -1,1 +1,1 @@
-rand.time=`t&rand.hunnid=101&rand.result=0&rand.basic=`f@rand.result=`m\rand.time\%\rand.hunnid\@
+rand.time=`t&rand.hunnid=101&rand.one=1&rand.min=0&rand.max=100&rand.result=0&rand.basic=`f@rand.time=`t@rand.result=`m\rand.time\%\rand.hunnid\@&rand.randNum=`f@rand.time=`t@rand.result=`m\rand.max\+\rand.one\@rand.result=`m\rand.result\-\rand.min\@rand.result=`m\rand.time\%\rand.result\@rand.result=`m\rand.result\+\rand.min\@
