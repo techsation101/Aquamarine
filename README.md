@@ -33,6 +33,8 @@ F(false_condition)
 
 ;(break_loop)
 
+?\`#`@\_@_@(if_statement change # to any condition and change _ to any command, surround commands with @ (must initialize variables outside of if statement))
+
 #+(import_library change # to any library)
 
 **Features inside rand+:**

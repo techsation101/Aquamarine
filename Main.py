@@ -338,6 +338,33 @@ def main_loop(list_code, current=None):
                     while True and tempL[0] != ";":
                         main_loop(list(temp1),tempL)
                         #print(tempL)
+        # --- IF LOGIC (? command) ---
+        if char == "?":
+            temp0 = ""
+            temp1 = ""
+            tempL = [""]
+            if list_code[local_in_code + 1] == "`":
+                for i in range(local_in_code + 2, len(list_code)):
+                    val = list_code[i]
+                    if val == "`":
+                        break
+                    temp0 += val
+                #print(list_code[local_in_code + 4 + len(temp0)])
+                for i in range(local_in_code + 4 + len(temp0), len(list_code)):
+                    val = list_code[i]
+                    if val == "&":
+                        break
+                    if val == "@":
+                        temp1 += "&"
+                        continue
+                    temp1 += val
+                #print(temp0)
+                #print(temp1)
+                temp1 += ";"
+                if temp0 == "T":
+                    while True and tempL[0] != ";":
+                        main_loop(list(temp1),tempL)
+                        #print(tempL)
 
         if current != None:
             current[0] = list_code[local_in_code]
