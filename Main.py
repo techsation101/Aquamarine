@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#if True:
 try:
 
     import collections
@@ -39,6 +40,32 @@ try:
         
         # Python dict handles missing keys slightly differently than Ruby's default Hash
         return variables_dict.get(temp, "Error Missing Variable"), temp
+
+    # Helper for finding boolean value of an expression
+    def boolChecker(listCode, codeIndex):
+        temp43 = ""
+        temp = ""
+        tempt = ""
+        operation = ""
+        for i in range(codeIndex, len(listCode)):
+            val = listCode[i]
+            if val == "\\":
+                break
+            temp43 += val
+        #print(temp43)
+        for i in list(temp43):
+            if i == "=":
+                operation = "="
+                break
+            temp += i
+        for i in range(len(temp),len(temp43)):
+            val = temp43[i]
+            tempt += val
+        if operation == "=":
+            if variables[temp] == variables[tempt[1:]]:
+                return True
+            else:
+                return False
 
     # Setup variables
     variables = {}
@@ -340,6 +367,13 @@ try:
                         while True and tempL[0] != ";":
                             main_loop(list(temp1),tempL)
                             #print(tempL)
+                    elif temp0[0] == "\\":
+                        #condition checker
+                        isTrue = boolChecker(list_code, local_in_code + 3)
+                        if isTrue:
+                            while True and tempL[0] != ";":
+                                main_loop(list(temp1),tempL)
+                                #print(tempL)
             # --- IF LOGIC (? command) ---
             if char == "?":
                 temp0 = ""
@@ -367,6 +401,13 @@ try:
                         while True and tempL[0] != ";":
                             main_loop(list(temp1),tempL)
                             #print(tempL)
+                    elif temp0[0] == "\\":
+                        #condition checker
+                        isTrue = boolChecker(list_code, local_in_code + 3)
+                        if isTrue:
+                            while True and tempL[0] != ";":
+                                main_loop(list(temp1),tempL)
+                                #print(tempL)
 
             if current != None:
                 current[0] = list_code[local_in_code]
