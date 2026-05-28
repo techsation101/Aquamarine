@@ -390,7 +390,7 @@ try:
                         val = list_code[i]
                         if val == "&":
                             break
-                        if val == "@":
+                        if val == "~":
                             temp1 += "&"
                             continue
                         temp1 += val
