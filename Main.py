@@ -77,6 +77,7 @@ try:
         global variables
         global output
         local_in_code = 0
+        ifRan = True
         
         for char in list_code:
             # --- IMPORT LOGIC (+ command) ---
@@ -400,6 +401,7 @@ try:
                     if temp0 == "T":
                         while True and tempL[0] != ";":
                             main_loop(list(temp1),tempL)
+                            ifRan = True
                             #print(tempL)
                     elif temp0[0] == "\\":
                         #condition checker
@@ -407,7 +409,33 @@ try:
                         if isTrue:
                             while True and tempL[0] != ";":
                                 main_loop(list(temp1),tempL)
+                                ifRan = True
                                 #print(tempL)
+                        else:
+                            ifRan = False
+                    else:
+                        ifRan = False
+            # --- ELSE LOGIC (! command) ---
+            if char == "!":
+                temp0 = ""
+                temp1 = ""
+                tempL = [""]
+                if list_code[local_in_code + 1] == "~":
+                    for i in range(local_in_code + 2, len(list_code)):
+                        val = list_code[i]
+                        if val == "&":
+                            break
+                        if val == "~":
+                            temp1 += "&"
+                            continue
+                        temp1 += val
+                    #print(temp0)
+                    #print(temp1)
+                    temp1 += ";"
+                    if not ifRan:
+                        while True and tempL[0] != ";":
+                            main_loop(list(temp1),tempL)
+                            #print(tempL)
 
             if current != None:
                 current[0] = list_code[local_in_code]

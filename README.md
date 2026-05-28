@@ -35,6 +35,8 @@ F(false_condition)
 
 ?\`#`~\_~_~(if_statement change # to any condition and change _ to any command, surround commands with ~ (must initialize variables outside of if statement))
 
+!~\_~_~(else_statement change _ to any command, surround commands with ~ (same as if))
+
 \\#=_\\(equal_condition change # to any variable and change _ to any variable (no need to surround individual variables with back-slashes))
 
 #+(import_library change # to any library)
