@@ -119,7 +119,11 @@ try:
                     
                     with open(var_name + ".am", "r") as file:
                         content = file.read()
-                        main_loop(list(content))
+                        lis_con = list(content)
+                        for i in lis_con:
+                            if i == "\n":
+                                lis_con.pop(lis_con.index(i))
+                        main_loop(lis_con)
             # --- PRINTING LOGIC (p command) ---
             if char == "p":
                 should_print = False
