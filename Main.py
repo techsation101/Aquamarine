@@ -6,8 +6,6 @@ try:
     import time
     import sys
 
-    print("Welcome to AMOC")
-    print("Please enter your Aquamarine code here:\n")
     if len(sys.argv) > 1:
         # Grab the first argument after the script name
         file_path = sys.argv[1] 
@@ -17,7 +15,11 @@ try:
         #print("File content:")
         code = content
     else:
+        print("Welcome to AMOI (Aquamarine Original Interpreter)")
+        print("Please enter your Aquamarine code here:\n")
         code = input("")
+
+        print("\nResult of code:")
 
     # Helper function to find the nearest ampersand
     def slice_from_nearest_ampersand(char_list, target_index):
@@ -57,6 +59,15 @@ try:
             if i == "=":
                 operation = "="
                 break
+            if i == "!":
+                operation = "!"
+                break
+            if i == "<":
+                operation = "<"
+                break
+            if i == ">":
+                operation = ">"
+                break
             temp += i
         for i in range(len(temp),len(temp43)):
             val = temp43[i]
@@ -66,13 +77,30 @@ try:
                 return True
             else:
                 return False
+        elif operation == "!":
+            if variables[temp] != variables[tempt[1:]]:
+                return True
+            else:
+                return False
+        elif operation == "<":
+            if float(variables[temp]) < float(variables[tempt[1:]]):
+                return True
+            else:
+                return False
+        elif operation == ">":
+            if float(variables[temp]) > float(variables[tempt[1:]]):
+                return True
+            else:
+                return False
 
     # Setup variables
     variables = {}
     output = ""
     code_as_list = list(code)
+    for i in code_as_list:
+        if i == "\n":
+            code_as_list.pop(code_as_list.index(i))
 
-    print("\nResult of code:")
     def main_loop(list_code, current=None):
         global variables
         global output
@@ -436,6 +464,24 @@ try:
                         while True and tempL[0] != ";":
                             main_loop(list(temp1),tempL)
                             #print(tempL)
+            # --- DEBUGGING LOGIC (DEBUG command) ---
+            if char == "D":
+                if list_code[local_in_code + 1] == "E":
+                    if list_code[local_in_code + 2] == "B":
+                        if list_code[local_in_code + 3] == "U":
+                            if list_code[local_in_code + 4] == "G":
+                                should_print = False
+                                if local_in_code - 1 >= 0:
+                                    if list_code[local_in_code - 1] == "&":
+                                        should_print = True
+                                elif local_in_code == 0:
+                                    if len(list_code) > 1:
+                                        should_print = True
+                                
+                                if should_print:
+                                    output += "\n"
+                                    output += "Debug information: list of all saved variables: " + str(variables)
+                    
 
             if current != None:
                 current[0] = list_code[local_in_code]

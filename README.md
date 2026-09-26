@@ -39,6 +39,14 @@ F(false_condition)
 
 \\#=_\\(equal_condition change # to any variable and change _ to any variable (no need to surround individual variables with back-slashes))
 
+\\#!_\\(not_equal_condition change # to any variable and change _ to any variable (no need to surround individual variables with back-slashes))
+
+\\#<_\\(less_condition change # to any variable and change _ to any variable (no need to surround individual variables with back-slashes))
+
+\\#>_\\(greater_condition change # to any variable and change _ to any variable (no need to surround individual variables with back-slashes))
+
+DEBUG(print_debug_information)
+
 #+(import_library change # to any library)
 
 **Features inside rand+:**
